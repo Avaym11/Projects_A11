@@ -8,13 +8,13 @@ load_dotenv()
 _client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Model cascade: Agent 2 tries each model in order before falling back to rules.
-# gemini-3.8-flash       → primary: fast & cheap (Free Tier supported)
-# gemini-3.5-flash-lite  → secondary: fast & lightweight fallback model
+# gemini-3.5-flash-lite  → primary: ultra-fast (~1s) & highly available
+# gemini-3.8-flash       → secondary: larger model fallback
 # Rule engine            → final guaranteed fallback (no API needed)
-_MODEL_CASCADE = ["gemini-3.8-flash", "gemini-3.5-flash-lite"]
+_MODEL_CASCADE = ["gemini-3.5-flash-lite", "gemini-3.8-flash"]
 
-# Hard cap per model attempt: abandon if no response within 20s
-_TIMEOUT_MS = 20_000
+# Hard cap per model attempt: abandon if no response within 15s
+_TIMEOUT_MS = 15_000
 
 
 def _fallback_rules(our_price: float, competitors: list) -> dict:
