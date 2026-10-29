@@ -1,0 +1,32 @@
+# Environment & Secrets (NEVER COMMIT API KEYS)
+.env
+*.env
+.env.*
+!.env.example
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# SQLite Database (persisted locally/in production)
+*.db
+*.sqlite
+*.sqlite3
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# IDE & Editor folders
+.vscode/
+.idea/
+.amazonq/
+
+# OS generated files
+.DS_Store
+Thumbs.db
