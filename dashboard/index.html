@@ -103,9 +103,9 @@ tailwind.config={theme:{extend:{colors:{brand:{50:'#ecfdf5',100:'#d1fae5',400:'#
    <button data-s="ratelimit" class="scen px-3 py-1.5 bg-sky-50 text-sky-700 text-xs font-semibold rounded-lg">6. 429 Rate Limit</button>
   </div>
   <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
-   <label class="font-semibold">LLM Strategist URL (optional):</label>
-   <input id="backend-url" placeholder="http://localhost:8000/api/strategist" class="flex-1 min-w-[220px] border border-slate-300 rounded-lg p-1.5 font-mono text-[11px]">
-   <span class="text-slate-500">Empty = built-in rule engine. If set and it fails, falls back automatically.</span>
+   <label class="font-semibold">LLM Strategist URL:</label>
+   <input id="backend-url" class="flex-1 min-w-[220px] border border-slate-300 rounded-lg p-1.5 font-mono text-[11px]">
+   <span class="text-slate-500">Auto-configured to Gemini AI endpoint. Falls back to rules if offline.</span>
   </div>
   <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4" id="pipeline"></div>
   <div class="mt-6 flex justify-center gap-3">
@@ -347,7 +347,7 @@ function rules(p,sc){
   return{action:a,target:t,reason:why+flag,flagged:bad.length>0,source:'Rule engine'};
 }
 async function strategist(p,sc){
-  const url=$('backend-url').value.trim();
+  const url=$('backend-url').value.trim() || (window.location.origin + '/api/strategist');
   if(url){
     try{
       const ctrl=new AbortController();
@@ -419,7 +419,7 @@ async function runPipeline(){
   $('status-text').innerText='Pipeline ready';busy=false;$('run-btn').disabled=false;updateDashboard();
 }
 
-window.onload=()=>{updateDashboard();switchTab('monitor')};
+window.onload=()=>{if($('backend-url')) $('backend-url').value = window.location.origin + '/api/strategist'; updateDashboard(); switchTab('monitor');};
 </script>
 </body>
 </html>
